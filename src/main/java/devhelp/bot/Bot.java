@@ -1,6 +1,6 @@
 package devhelp.bot;
 
-import devhelp.bot.commands.registry.CommandRegistry;
+import devhelp.bot.commands.CommandRegistry;
 import devhelp.bot.config.BotConfig;
 import devhelp.bot.events.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;

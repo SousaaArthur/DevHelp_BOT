@@ -48,25 +48,25 @@ public class HelpInteractionListener extends ListenerAdapter {
                             "Interface carregada com conhecimento técnico, boas práticas e uns memes pra quebrar o gelo do debug eterno.\n\n" +
                             "**🧠 Consulte abaixo os módulos disponíveis e escolha seu caminho no sistema:**\n")
 
-                    .addField("📚 Estudos",
+                    .addField("**📚 Estudos**",
                             "⚙️ Invoque comandos que turbinarão seu cérebro de dev: ``/startcode`` pra baixar o roadmap do sucesso, ``/pomodoro`` pra focar como um monge digital e uma chuva de links que são pura RAM de conhecimento.",
                             false)
 
-                    .addField("🎮 Diversão",
+                    .addField("**🎮 Diversão**",
                             "🕹️ Porque até um operador precisa de downtime. Desafios de lógica, curiosidades tech que vão fritar sua mente, e memes direto do submundo da programação.",
                             false)
 
-                    .addField("🧑‍💻 Iniciante",
+                    .addField("**🧑‍💻 Iniciante**",
                             "🧠 Respire fundo, plugue-se na Matrix e comece do zero. Linguagens básicas, exercícios mastigados e hacks de produtividade pra quem quer subir de nível sem crashar no caminho.",
                             false)
 
-                    .addField("🐙 GitHub",
+                    .addField("**🐙 GitHub**",
                             "💾 Consulte os logs sagrados do repositório oficial. Lá tem o código-fonte do bot, issues abertas pro caos controlado e chances de você deixar sua marca na resistência digital.",
                             false)
 
                     .setFooter("Desenvolvido por StarCode", "https://cdn.discordapp.com/attachments/1295504651289886731/1364389251340570675/ChatGPT_Image_21_de_abr._de_2025_20_49_26.png?ex=68097e02&is=68082c82&hm=3954ad5f9205165a29a7c3be05f6e41aeaba6dc4646d5dd47a2f9555b0c44d84&")
                     .setThumbnail("https://cdn.discordapp.com/attachments/1295504651289886731/1364389251340570675/ChatGPT_Image_21_de_abr._de_2025_20_49_26.png?ex=68097e02&is=68082c82&hm=3954ad5f9205165a29a7c3be05f6e41aeaba6dc4646d5dd47a2f9555b0c44d84&")
-                    .setImage("https://cdn.discordapp.com/attachments/1308098418975182948/1309343979346591846/standard_2.gif?ex=67413d1b&is=673feb9b&hm=812ae5ce71f8b9eed5460e32d3248c1f290fea705111f11053fc7182b3d413d4&")
+                    .setImage("https://cdn.discordapp.com/attachments/1295504651289886731/1366236240487125094/ChatGPT_Image_27_de_abr._de_2025_23_14_16.png?ex=68103627&is=680ee4a7&hm=e4e614703a2646c2d5e7e9a394afb7649a681ca67442288018fd946981037d8e&")
                     .setColor(0xd38f50)
                     .build()).queue();
             default -> event.editMessageEmbeds(new EmbedBuilder()

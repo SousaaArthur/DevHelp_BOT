@@ -2,7 +2,6 @@ package devhelp.bot.commands.mainCommands;
 
 import devhelp.bot.commands.ICommand;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
@@ -46,7 +45,7 @@ public class HelpCommand implements ICommand {
 
                 .setFooter("Desenvolvido por StarCode", "https://cdn.discordapp.com/attachments/1295504651289886731/1364389251340570675/ChatGPT_Image_21_de_abr._de_2025_20_49_26.png?ex=68097e02&is=68082c82&hm=3954ad5f9205165a29a7c3be05f6e41aeaba6dc4646d5dd47a2f9555b0c44d84&")
                 .setThumbnail("https://cdn.discordapp.com/attachments/1295504651289886731/1364389251340570675/ChatGPT_Image_21_de_abr._de_2025_20_49_26.png?ex=68097e02&is=68082c82&hm=3954ad5f9205165a29a7c3be05f6e41aeaba6dc4646d5dd47a2f9555b0c44d84&")
-                .setImage("https://cdn.discordapp.com/attachments/1308098418975182948/1309343979346591846/standard_2.gif?ex=67413d1b&is=673feb9b&hm=812ae5ce71f8b9eed5460e32d3248c1f290fea705111f11053fc7182b3d413d4&")
+                .setImage("https://cdn.discordapp.com/attachments/1295504651289886731/1366236240487125094/ChatGPT_Image_27_de_abr._de_2025_23_14_16.png?ex=68103627&is=680ee4a7&hm=e4e614703a2646c2d5e7e9a394afb7649a681ca67442288018fd946981037d8e&")
                 .setColor(0xd38f50)
                 .build();
         event.replyEmbeds(embed).addActionRow(menu).setEphemeral(true).queue();

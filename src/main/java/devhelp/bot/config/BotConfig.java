@@ -14,7 +14,7 @@ public class BotConfig {
         return dotenv.get("ID_GUILD");
     }
 
-    public static  String getPrefix() {
-        return "*";
+    public static String getGuildChannelLog(){
+        return "ID_CHANNEL";
     }
 }
