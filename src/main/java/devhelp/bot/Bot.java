@@ -2,7 +2,7 @@ package devhelp.bot;
 
 import devhelp.bot.commands.CommandRegistry;
 import devhelp.bot.config.BotConfig;
-import devhelp.bot.events.SlashCommandListener;
+import devhelp.bot.Events.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -13,9 +13,9 @@ import javax.security.auth.login.LoginException;
 
 public class Bot {
     public static void main(String[] args) {
-        System.out.println("🎯 GUILD ID no .env: " + BotConfig.getGuild());
         try {
             startBot();
+            System.out.println("Bot inicido com sucesso ✅");
         } catch (LoginException e) {
             System.err.println("Erro ao iniciar o Token do bot");
         }

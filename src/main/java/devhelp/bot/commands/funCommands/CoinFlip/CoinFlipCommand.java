@@ -1,4 +1,4 @@
-package devhelp.bot.commands.funCommands;
+package devhelp.bot.commands.funCommands.CoinFlip;
 
 import devhelp.bot.commands.ICommand;
 import net.dv8tion.jda.api.EmbedBuilder;

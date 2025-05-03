@@ -1,14 +1,16 @@
 package devhelp.bot.commands.studyCommands;
 
-import devhelp.bot.DatabaseManager;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import devhelp.bot.Database.DatabaseManager;
+import devhelp.bot.Database.ExerciseDB.Exercise;
+import devhelp.bot.Database.ExerciseDB.ExerciseRepository;
 import devhelp.bot.commands.ICommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.bson.Document;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.Normalizer;
 
 public class ExerciseCommand implements ICommand {
@@ -33,35 +35,18 @@ public class ExerciseCommand implements ICommand {
             language = "javascript";
         }
 
-        String query = "SELECT title, exercise FROM exercises WHERE language = ? AND difficulty = ? ORDER BY RANDOM() LIMIT 1";
+        ExerciseRepository exerciseRepository = new ExerciseRepository();
+        Exercise exercise = exerciseRepository.getRandomExercise(language, difficulty);
 
-        try (Connection conn = DatabaseManager.connect(); PreparedStatement stmt = conn.prepareStatement(query)){
-            stmt.setString(1, language);
-            stmt.setString(2, difficulty);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                String title = rs.getString("title");
-                String exercise = rs.getString("exercise");
-
-                MessageEmbed embed = new EmbedBuilder()
-                        .setTitle("Exercício de " + language + " - " + difficulty)
-                        .setDescription("Aqui está um exercício para você praticar! 🚀")
-                        .addField("Linguagem:", "``" + language + "``", true)
-                        .addField("Dificuldade: ", "``" + difficulty + "``" +  " " + textDifficulty, true)
-                        .addField("Exercício:\n", "```" + exercise + "```", false)
-                        .setColor(getColorByDifficulty(difficulty))
-                        .build();
-                        event.getHook().sendMessageEmbeds(embed).queue();
-            } else {
-                event.getHook().sendMessage("Nenhum exercício encontrado para a linguagem e dificuldade especificadas! 🧐").setEphemeral(true).queue();
-                return;
-            }
-
-        } catch (java.sql.SQLException e) {
-            event.reply("Erro ao buscar o exercício! 😢 Detalhes: " + e.getMessage()).setEphemeral(true).queue();
-            e.printStackTrace();
-        }
+        MessageEmbed embed = new EmbedBuilder()
+                .setTitle("Exercício de " + exercise.getLanguage() + " - " + exercise.getDifficulty())
+                .setDescription("Aqui está um exercício para você praticar! 🚀")
+                .addField("Linguagem:", "``" + exercise.getLanguage() + "``", true)
+                .addField("Dificuldade: ", "``" + exercise.getDifficulty() + "``" +  " " + textDifficulty, true)
+                .addField("Exercício:\n", "```" + exercise.getExercise() + "```", false)
+                .setColor(getColorByDifficulty(difficulty))
+                .build();
+        event.getHook().sendMessageEmbeds(embed).queue();
 
     }
 

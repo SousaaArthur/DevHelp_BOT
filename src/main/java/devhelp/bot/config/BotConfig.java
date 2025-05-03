@@ -14,6 +14,10 @@ public class BotConfig {
         return dotenv.get("ID_GUILD");
     }
 
+    public static String getUrlDatabase(){
+        return dotenv.get("URL_DATABASE");
+    }
+
     public static String getGuildChannelLog(){
         return "ID_CHANNEL";
     }

@@ -1,4 +1,4 @@
-package devhelp.bot.commands.mainCommands;
+package devhelp.bot.commands.mainCommands.Help;
 
 import devhelp.bot.commands.ICommand;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -45,7 +45,7 @@ public class HelpCommand implements ICommand {
 
                 .setFooter("Desenvolvido por StarCode", "https://cdn.discordapp.com/attachments/1295504651289886731/1364389251340570675/ChatGPT_Image_21_de_abr._de_2025_20_49_26.png?ex=68097e02&is=68082c82&hm=3954ad5f9205165a29a7c3be05f6e41aeaba6dc4646d5dd47a2f9555b0c44d84&")
                 .setThumbnail("https://cdn.discordapp.com/attachments/1295504651289886731/1364389251340570675/ChatGPT_Image_21_de_abr._de_2025_20_49_26.png?ex=68097e02&is=68082c82&hm=3954ad5f9205165a29a7c3be05f6e41aeaba6dc4646d5dd47a2f9555b0c44d84&")
-                .setImage("https://cdn.discordapp.com/attachments/1295504651289886731/1366236240487125094/ChatGPT_Image_27_de_abr._de_2025_23_14_16.png?ex=68103627&is=680ee4a7&hm=e4e614703a2646c2d5e7e9a394afb7649a681ca67442288018fd946981037d8e&")
+                .setImage("https://cdn.discordapp.com/attachments/1367645252973756437/1367645513792618557/ChatGPT_Image_27_de_abr._de_2025_23_14_16.png?ex=681556a4&is=68140524&hm=00c676ce5a491b1816346747d232c2298f5522014cfc489cb61797c644a3467e&")
                 .setColor(0xd38f50)
                 .build();
         event.replyEmbeds(embed).addActionRow(menu).setEphemeral(true).queue();
