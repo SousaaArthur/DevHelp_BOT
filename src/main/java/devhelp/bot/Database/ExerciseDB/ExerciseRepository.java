@@ -16,13 +16,18 @@ public class ExerciseRepository {
             Document query = new Document("language", language)
                     .append("difficulty", difficulty);
 
-            Document exerciseDoc = exercisesCollection.find(query).first();
+            // Use aggregation with $sample to get a random exercise matching the query
+            java.util.List<Document> randomDocs = exercisesCollection.aggregate(
+                    java.util.Arrays.asList(
+                            new Document("$match", query),
+                            new Document("$sample", new Document("size", 1))
+                    )
+            ).into(new java.util.ArrayList<>());
 
-            if (exerciseDoc != null) {
-                String title = exerciseDoc.getString("title");
-                String exercise = exerciseDoc.getString("exercise");
+            if (!randomDocs.isEmpty()) {
+                Document exerciseDoc = randomDocs.get(0);
                 return new Exercise(
-                        exerciseDoc.getObjectId("id"),
+                        exerciseDoc.getObjectId("_id"),
                         exerciseDoc.getString("title"),
                         exerciseDoc.getString("exercise"),
                         exerciseDoc.getString("language"),
@@ -38,4 +43,9 @@ public class ExerciseRepository {
         }
         return null;
     }
+
+    public int hasExercises() {
+        return exercisesCollection.find().into(new java.util.ArrayList<>()).size();
+    }
+
 }

@@ -1,15 +1,11 @@
 package devhelp.bot.commands.studyCommands;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import devhelp.bot.Database.DatabaseManager;
 import devhelp.bot.Database.ExerciseDB.Exercise;
 import devhelp.bot.Database.ExerciseDB.ExerciseRepository;
 import devhelp.bot.commands.ICommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.bson.Document;
 
 import java.text.Normalizer;
 
@@ -18,10 +14,18 @@ public class ExerciseCommand implements ICommand {
     public void execute(SlashCommandInteractionEvent event, String[] args) {
         event.deferReply().queue();
 
-        String language = event.getOption(formattedText("linguagem")).getAsString();
-        String difficulty = event.getOption(formattedText("dificuldade")).getAsString();
+        String language = event.getOption(formattedText("linguagem")).getAsString().toLowerCase();
+        String difficulty = event.getOption(formattedText("dificuldade")).getAsString().toLowerCase();
 
         String textDifficulty = "";
+
+        if(difficulty.equals("fácil")){
+            difficulty = "facil";
+        } else if(difficulty.equals("médio")){
+            difficulty = "medio";
+        } else if(difficulty.equals("difícil")){
+            difficulty = "dificil";
+        }
 
         if (difficulty.equalsIgnoreCase("facil")){
             textDifficulty = ":green_square:";
@@ -31,12 +35,24 @@ public class ExerciseCommand implements ICommand {
             textDifficulty = ":red_square:";
         }
 
-        if(language.equals("js")){
+        if(language.equals("py")){
+            language = "python";
+        } else if(language.equals("js")){
             language = "javascript";
         }
 
         ExerciseRepository exerciseRepository = new ExerciseRepository();
         Exercise exercise = exerciseRepository.getRandomExercise(language, difficulty);
+
+        if (exercise == null) {
+            MessageEmbed embed = new EmbedBuilder()
+                    .setTitle("Ops! 😢")
+                    .setDescription("Nenhum exercício encontrado para essa linguagem e dificuldade!\n" + "> Para saber quais exercícios estão disponíveis, use o comando `/help`.")
+                    .setColor(0xFF0000)
+                    .build();
+            event.getHook().sendMessageEmbeds(embed).queue();
+            return;
+        }
 
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle("Exercício de " + exercise.getLanguage() + " - " + exercise.getDifficulty())

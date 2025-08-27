@@ -2,6 +2,7 @@ package devhelp.bot;
 
 import devhelp.bot.commands.CommandRegistry;
 import devhelp.bot.config.BotConfig;
+import devhelp.bot.Database.ExerciseDB.ExerciseRepository;
 import devhelp.bot.Events.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -15,6 +16,8 @@ public class Bot {
     public static void main(String[] args) {
         try {
             startBot();
+            ExerciseRepository exerciseRepository = new ExerciseRepository();
+            System.out.println(exerciseRepository.getRandomExercise("java", "facil"));
             System.out.println("Bot inicido com sucesso ✅");
         } catch (LoginException e) {
             System.err.println("Erro ao iniciar o Token do bot");

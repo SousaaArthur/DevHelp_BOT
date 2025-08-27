@@ -14,7 +14,7 @@ public class DatabaseManager {
     public static MongoDatabase connect() {
         if (mongoClient == null) {
             mongoClient = MongoClients.create(BotConfig.getUrlDatabase());
-            database = mongoClient.getDatabase("bot_database");
+            database = mongoClient.getDatabase("devhelper_bot");
         }
         return database;
     }
