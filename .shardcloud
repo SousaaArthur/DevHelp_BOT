@@ -1,0 +1,5 @@
+DISPLAY_NAME=DevHelperBot
+DESCRIPTION=Bot do Discord feito em Java com JDA
+MAIN=DevHelperBot.jar
+MEMORY=1024
+VERSION=LATEST

@@ -1,6 +1,5 @@
 package devhelp.bot.commands;
 
-import net.dv8tion.jda.api.events.interaction.GenericInteractionCreateEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public interface ICommand {
