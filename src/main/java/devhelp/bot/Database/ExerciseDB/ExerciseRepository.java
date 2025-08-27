@@ -16,7 +16,6 @@ public class ExerciseRepository {
             Document query = new Document("language", language)
                     .append("difficulty", difficulty);
 
-            // Use aggregation with $sample to get a random exercise matching the query
             java.util.List<Document> randomDocs = exercisesCollection.aggregate(
                     java.util.Arrays.asList(
                             new Document("$match", query),

@@ -17,8 +17,9 @@ public class Bot {
         try {
             startBot();
             ExerciseRepository exerciseRepository = new ExerciseRepository();
-            System.out.println(exerciseRepository.getRandomExercise("java", "facil"));
-            System.out.println("Bot inicido com sucesso ✅");
+            System.out.println("Número de exercícios: " + exerciseRepository.hasExercises());
+            System.out.println("Banco de dados iniciado em: " + BotConfig.getUrlDatabase());
+            System.out.println("Bot inciado com sucesso ✅");
         } catch (LoginException e) {
             System.err.println("Erro ao iniciar o Token do bot");
         }

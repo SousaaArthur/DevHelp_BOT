@@ -6,8 +6,8 @@ import devhelp.bot.Events.MemeListeners.ButtonViews;
 import devhelp.bot.commands.funCommands.CoinFlip.CoinFlipCommand;
 import devhelp.bot.commands.funCommands.Meme.MemeCommand;
 import devhelp.bot.commands.mainCommands.Ping.PingCommand;
+import devhelp.bot.commands.studyCommands.Exercise.ExerciseCommand;
 import devhelp.bot.commands.mainCommands.Help.HelpCommand;
-import devhelp.bot.commands.studyCommands.ExerciseCommand;
 import devhelp.bot.config.BotConfig;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -44,11 +44,12 @@ public class CommandRegistry {
                         .queue();
                 guild.upsertCommand(memeCommand.getName(), memeCommand.getDescription()).queue();
 
-//                guild.retrieveCommands().queue(commands -> {
-//                    for (var command : commands) {
-//                        command.delete().queue();
-//                    }
-//                });
+                jda.retrieveCommands().queue(commands -> {
+                    for (var command : commands) {
+                        command.delete().queue();
+                        System.out.println("🗑️ Comando global deletado: " + command.getName());
+                    }
+                });
 
                 jda.addEventListener(new HelpInteractionListener());
                 jda.addEventListener(new ButtonLike());

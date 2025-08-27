@@ -1,4 +1,4 @@
-package devhelp.bot.commands.studyCommands;
+package devhelp.bot.commands.studyCommands.Exercise;
 
 import devhelp.bot.Database.ExerciseDB.Exercise;
 import devhelp.bot.Database.ExerciseDB.ExerciseRepository;
