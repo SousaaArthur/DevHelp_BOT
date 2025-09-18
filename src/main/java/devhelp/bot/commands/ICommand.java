@@ -4,12 +4,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 public interface ICommand {
 
-    void execute(SlashCommandInteractionEvent event, String[] args);
+  void execute(SlashCommandInteractionEvent event, String[] args);
 
-    String getName();
+  String getName();
 
-    String getDescription();
+  String getDescription();
 
-    String getUsage();
+  String getUsage();
 
 }
