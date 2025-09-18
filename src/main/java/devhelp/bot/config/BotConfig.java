@@ -21,4 +21,8 @@ public class BotConfig {
   public static String getGuildChannelLog() {
     return dotenv.get("ID_CHANNEL_LOGS");
   }
+
+  public static String getTokenGithub(){
+    return dotenv.get("TOKEN_GITHUB");
+  }
 }
