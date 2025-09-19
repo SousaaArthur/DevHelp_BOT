@@ -12,6 +12,7 @@ import devhelp.bot.commands.utility.Profile.AddGithub;
 import devhelp.bot.commands.utility.Profile.SwitchColor;
 import devhelp.bot.commands.utility.Profile.ViewCommand;
 import devhelp.bot.commands.utility.Ranks.Levels;
+import devhelp.bot.commands.utility.github.Streak;
 import devhelp.bot.config.BotConfig;
 import devhelp.bot.events.MessageListener;
 import devhelp.bot.events.MemeListeners.ButtonLike;
@@ -47,6 +48,7 @@ public class CommandRegistry {
         AddBio addBioCommand = new AddBio();
         Level levelCommand = new Level();
         Levels levelsCommand = new Levels();
+        Streak streakCommand = new Streak();
 
         guild.upsertCommand(pingCommand.getName(), pingCommand.getDescription()).queue();
         guild.upsertCommand(helpCommand.getName(), helpCommand.getDescription()).queue();
@@ -95,6 +97,12 @@ public class CommandRegistry {
               .addOption(OptionType.USER, levelsCommand.getOptionName(), levelsCommand.getOptionDescription(), false)
         )
         .queue();
+        guild.upsertCommand("github", "Comando para mostra informações do usuário no Github")
+          .addSubcommands(
+            new SubcommandData(streakCommand.getName(), streakCommand.getDescription())
+              .addOption(OptionType.USER, streakCommand.getOptionName(), streakCommand.getOptionDescription())
+          )
+          .queue();
         // jda.retrieveCommands().queue(commands -> {
         //   for (var command : commands) {
         //     command.delete().queue();

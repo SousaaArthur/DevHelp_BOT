@@ -5,12 +5,13 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class EmbedBuilderService {
-  public MessageEmbed embedSucess(String title, String description, String footer){
+  public MessageEmbed embedSucess(String title, String description, String avatarUrl, String footer){
     return new EmbedBuilder()
     .setTitle(title)
     .setDescription(description)
+    .setThumbnail(avatarUrl)
+    .setFooter(footer)
     .setColor(Colors.getSuccess())
-    .setFooter(footer == null ? null : footer )
     .build();
   }
 

@@ -106,7 +106,7 @@ public class ViewCommand implements ICommand{
         .addField("🛠 Linguagens:", getRoleString(user.getLanguages()), true)
         .addField("🛡 Funções:", getRoleString(user.getRole()), true)
         .setColor(Color.decode(user.getThemeColor()))
-        .setThumbnail(user.getAvatarUrl())
+        .setThumbnail(user.getAvatarUrl() == null || user.getAvatarUrl().isEmpty() ? "https://media.discordapp.net/attachments/1365822361697386647/1418467503650246749/b5d4ce10a744861ffd3314d20d116976.png?ex=68ce3a4e&is=68cce8ce&hm=4e92ed82d5b236fc50ce29c970f7acab5e037171b374a473a91f72e9d1517cac&=&format=webp&quality=lossless&width=765&height=765" : user.getAvatarUrl())
         .setFooter(user.getGithubUser() == null || user.getGithubUser().isEmpty() ? "Adicione seu GitHub com /profile addgithub" : null)
         .build();
     if (user.getGithubUser() != null && !user.getGithubUser().isEmpty()) {
