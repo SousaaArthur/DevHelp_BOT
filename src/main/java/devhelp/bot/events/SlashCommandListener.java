@@ -11,6 +11,7 @@ import devhelp.bot.commands.utility.Profile.AddGithub;
 import devhelp.bot.commands.utility.Profile.SwitchColor;
 import devhelp.bot.commands.utility.Profile.ViewCommand;
 import devhelp.bot.commands.utility.Ranks.Levels;
+import devhelp.bot.commands.utility.github.Streak;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +75,19 @@ public class SlashCommandListener extends ListenerAdapter {
           break;
         case "addbio":
           new AddBio().execute(event, null);
+          break;
+        default:
+          break;
+      }
+    }
+    if(command.equals("github")){
+      String subcommand = event.getSubcommandName();
+
+      if (subcommand == null) return;
+
+      switch (subcommand) {
+        case "streak":
+          new Streak().execute(event, null);
           break;
         default:
           break;

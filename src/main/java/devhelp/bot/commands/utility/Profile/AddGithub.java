@@ -1,13 +1,12 @@
 package devhelp.bot.commands.utility.Profile;
 
 import devhelp.bot.commands.ICommand;
-import devhelp.bot.config.util.Colors;
 import devhelp.bot.database.usersDB.User;
 import devhelp.bot.database.usersDB.UserRepository;
+import devhelp.bot.exception.UserGithubNotFoundException;
+import devhelp.bot.exception.UserNotFoundException;
 import devhelp.bot.services.EmbedBuilderService;
 import devhelp.bot.services.GithubService;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class AddGithub implements ICommand{
@@ -16,24 +15,37 @@ public class AddGithub implements ICommand{
   public void execute(SlashCommandInteractionEvent event, String[] args) {
     try{      
       UserRepository userRepo = new UserRepository();
-      User user = userRepo.getUser(event.getUser().getId());
-  
+      User user = userRepo.getUser(event.getUser().getId());      
+      if(user == null) {
+        throw new UserNotFoundException("Você ainda não possui um perfil. Use o comando ``/profile view`` para criar seu perfil.");
+      }
       var getUserName = event.getOption(getOptionName()).getAsString();
+      GithubService gService = new GithubService();
+      if(!gService.isUserExist(getUserName)){
+        throw new UserGithubNotFoundException("O usuário do Github inserido não existe. Verifique se você digitou corretamente.");
+      }
       user.setGithubUser(getUserName);
-
-      MessageEmbed embed = new EmbedBuilder()
-        .setTitle("🐙 Github vinculado com sucesso!")
-        .setDescription(String.format(
+      event.replyEmbeds(
+        new EmbedBuilderService().embedSucess(
+          "🐙 Github vinculado com sucesso!", 
           """
           ✅ **Usuário vinculado:** `%s`
           🌐 [Acesse seu Github](https://github.com/%s)
           -# Use /profile view para visualizar seu perfil completo
-          """, user.getGithubUser(), user.getGithubUser()))
-          .setThumbnail(new GithubService().getAvatarGithub(getUserName))
-          .setColor(Colors.getPrimary())
-        .build();
-      event.replyEmbeds(embed).setEphemeral(false).queue();
+          """.formatted(user.getGithubUser(), user.getGithubUser()),
+          new GithubService().getAvatarGithub(getUserName),
+          null)
+      ).setEphemeral(false).queue();
       userRepo.updateUser(user);
+    } catch(UserNotFoundException e){
+      event.replyEmbeds(
+        new EmbedBuilderService().embedWarning("⚠️ Usuário não encontrado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
+      ).setEphemeral(true)
+      .queue();
+    } catch(UserGithubNotFoundException e) {
+        event.replyEmbeds(
+          new EmbedBuilderService().embedWarning("⚠️ Usuário do Github não encontrado", e.getMessage(), null)
+        ).setEphemeral(true).queue();
     } catch (Exception e) {
       event.replyEmbeds(
         new EmbedBuilderService().embedError("❌ Ocorreu um erro ao vincular o Github", "Verifique se você inseriu o username corretamente.", null)

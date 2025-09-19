@@ -18,8 +18,19 @@ public class AddBio implements ICommand {
     User user = userRepo.getUser(userId);
     
     if(user == null){
+      throw new UserNotFoundException("Você ainda não possui um perfil. Use o comando ``/profile view`` para criar seu perfil.");
+    }
+
+    if(bioOption.length() > 160){
       event.replyEmbeds(
-        new EmbedBuilderService().embedWarning("⚠️ Aviso", "Você ainda não possui um perfil. Use o comando ``/profile view`` para criar seu perfil.", null)
+        new EmbedBuilderService().embedWarning("⚠️ Bio muito longa", "Sua bio deve ter no máximo 160 caracteres.", null)
+      ).setEphemeral(true).queue();
+      return;
+    }
+
+    if(bioOption.contains("discord.gg")){
+      event.replyEmbeds(
+        new EmbedBuilderService().embedWarning("⚠️ Link inválido", "Sua bio não pode conter links de convite do Discord.", null)
       ).setEphemeral(true).queue();
       return;
     }
@@ -28,10 +39,13 @@ public class AddBio implements ICommand {
     userRepo.updateUser(user);
     
     event.replyEmbeds(
-      new EmbedBuilderService().embedSucess("✅ Bio atualizada com sucesso!", String.format("Sua nova bio é:\n\n> %s", bioOption), null)
+      new EmbedBuilderService().embedSucess("✅ Bio atualizada com sucesso!", String.format("Sua nova bio é:\n\n> %s", bioOption), null, null)
     ).setEphemeral(false).queue();
     } catch (UserNotFoundException e){
-
+      event.replyEmbeds(
+        new EmbedBuilderService().embedWarning("⚠️ Usuário não encontrado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
+      ).setEphemeral(true)
+      .queue();
     }
     catch (Exception e) {
       event.reply("Ocorreu um erro ao executar o comando.").setEphemeral(true).queue();

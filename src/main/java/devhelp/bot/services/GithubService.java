@@ -10,9 +10,25 @@ import java.net.http.HttpResponse.BodyHandlers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import devhelp.bot.config.BotConfig;
+
 public class GithubService {
   private String BASE_URL = "https://api.github.com/users/";
   HttpClient client = HttpClient.newHttpClient();
+
+  public Boolean isUserExist(String username){
+    String url = BASE_URL + username;
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(url))
+      .build();
+    try {
+      HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+      return response.statusCode() == 200;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+    return false;
+  }
 
   public String getAvatarGithub(String userName){
     String url = BASE_URL + userName;
@@ -70,7 +86,7 @@ public class GithubService {
     return null;
   }
 
-  public String getCommitStreak(String userName, String token) {
+  public int getCommitStreak(String userName) {
       String graphqlUrl = "https://api.github.com/graphql";
 
       // Query GraphQL
@@ -96,7 +112,7 @@ public class GithubService {
 
       HttpRequest request = HttpRequest.newBuilder()
               .uri(URI.create(graphqlUrl))
-              .header("Authorization", "Bearer " + token) // token GitHub
+              .header("Authorization", "Bearer " + BotConfig.getTokenGithub())
               .header("Content-Type", "application/json")
               .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
               .build();
@@ -105,7 +121,7 @@ public class GithubService {
           HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
           if (response.statusCode() != 200) {
               System.err.println("Erro GraphQL GitHub: " + response.statusCode());
-              return null;
+              return 0;
           }
 
           JSONObject result = new JSONObject(response.body());
@@ -132,16 +148,16 @@ public class GithubService {
               }
           }
 
-          return "Maior sequência de dias consecutivos com commits: " + maxStreak;
+          return maxStreak;
 
       } catch (IOException | InterruptedException e) {
           e.printStackTrace();
       }
 
-      return null;
+      return 0;
   }
 
-  public String getCurrentCommitStreak(String userName, String token) {
+  public int getCurrentCommitStreak(String userName) {
     String graphqlUrl = "https://api.github.com/graphql";
 
     String query = """
@@ -166,7 +182,7 @@ public class GithubService {
 
     HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(graphqlUrl))
-            .header("Authorization", "Bearer " + token)
+            .header("Authorization", "Bearer " + BotConfig.getTokenGithub())
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
             .build();
@@ -175,7 +191,7 @@ public class GithubService {
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
         if (response.statusCode() != 200) {
             System.err.println("Erro GraphQL GitHub: " + response.statusCode());
-            return null;
+            return 0;
         }
 
         JSONObject result = new JSONObject(response.body());
@@ -203,12 +219,82 @@ public class GithubService {
             }
         }
 
-        return "Sequência atual de commits: " + currentStreak + " dias";
+        return currentStreak;
 
     } catch (IOException | InterruptedException e) {
         e.printStackTrace();
     }
 
-    return null;
+    return 0;
   }
+
+  public String formatWeeklyStreak(JSONArray weeks) {
+      // Pega a última semana do calendário
+      JSONObject lastWeek = weeks.getJSONObject(weeks.length() - 1);
+      JSONArray days = lastWeek.getJSONArray("contributionDays");
+
+      // Dias da semana (GitHub começa em domingo, mas podemos reordenar)
+      String[] dias = {"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"};
+
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < days.length(); i++) {
+          int count = days.getJSONObject(i).getInt("contributionCount");
+          String emoji = count > 0 ? "🟩" : "🟥"; // verde = commit, vermelho = falha
+          sb.append(dias[i]).append(" ").append(emoji).append("  ");
+      }
+
+      return sb.toString();
+  }
+
+  public JSONArray getContributionWeeks(String userName) {
+    String graphqlUrl = "https://api.github.com/graphql";
+
+    String query = """
+        {
+          user(login: "%s") {
+            contributionsCollection {
+              contributionCalendar {
+                weeks {
+                  contributionDays {
+                    date
+                    contributionCount
+                  }
+                }
+              }
+            }
+          }
+        }
+    """.formatted(userName);
+
+    JSONObject json = new JSONObject();
+    json.put("query", query);
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(graphqlUrl))
+            .header("Authorization", "Bearer " + BotConfig.getTokenGithub())
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+            .build();
+
+    try {
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            System.err.println("Erro GraphQL GitHub: " + response.statusCode());
+            return new JSONArray();
+        }
+
+        JSONObject result = new JSONObject(response.body());
+        return result
+                .getJSONObject("data")
+                .getJSONObject("user")
+                .getJSONObject("contributionsCollection")
+                .getJSONObject("contributionCalendar")
+                .getJSONArray("weeks");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return new JSONArray();
+}
 }
