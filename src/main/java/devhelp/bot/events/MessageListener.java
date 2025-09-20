@@ -30,7 +30,6 @@ public class MessageListener extends ListenerAdapter {
       UserRepository userRepo = new UserRepository();
       User user = userRepo.getUser(userId);
       if(user == null) {
-        
         user = userRepo.setUser(userId, userName, avatarUrl, new RolesIDs().languagesIds, new RolesIDs().languagesIds, member);
       }
 

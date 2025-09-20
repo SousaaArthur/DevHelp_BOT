@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class EmbedBuilderService {
+  private String embedId;
   public MessageEmbed embedSucess(String title, String description, String avatarUrl, String footer){
     return new EmbedBuilder()
     .setTitle(title)
@@ -42,4 +43,11 @@ public class EmbedBuilderService {
     .build();
   } 
 
+  public String setEmbedId(String embedId) {
+    return embedId;
+  }
+
+  public String getEmbedId(){
+    return this.embedId;
+  }
 }

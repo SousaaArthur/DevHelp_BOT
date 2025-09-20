@@ -16,11 +16,8 @@ public class User {
   private List<String> languages;
   private List<String> role;
   private String githubUser;
+  private int githubStreak;
   
-  public User(String userId) {
-    this.userId = userId;
-  }
-
   public User(String userId, String userName, String avatarUrl, List<String> languages, List<String> role) {
     this.userId = userId;
     this.userName = userName;
@@ -50,6 +47,17 @@ public class User {
     user.setMessagesSent(doc.getInteger("messagesSent", 0));
     return user;
   } 
+  public User(String userId) {
+    this.userId = userId;
+  }
+
+  public int getGithubStreak() {
+    return githubStreak;
+  }
+
+  public void setGithubStreak(int githubStreak) {
+    this.githubStreak = githubStreak;
+  }
 
   public String getGithubUser() {
     return githubUser;

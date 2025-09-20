@@ -89,7 +89,6 @@ public class GithubService {
   public int getCommitStreak(String userName) {
       String graphqlUrl = "https://api.github.com/graphql";
 
-      // Query GraphQL
       String query = """
           {
             user(login: "%s") {
@@ -205,9 +204,8 @@ public class GithubService {
         int currentStreak = 0;
         boolean counting = true;
 
-        for (int i = weeks.length() - 1; i >= 0 && counting; i--) {
+        for (int i = weeks.length() - 1; i >= 0 && counting; i--) { 
             JSONArray days = weeks.getJSONObject(i).getJSONArray("contributionDays");
-
             for (int j = days.length() - 1; j >= 0; j--) {
                 int count = days.getJSONObject(j).getInt("contributionCount");
                 if (count > 0) {
@@ -229,17 +227,15 @@ public class GithubService {
   }
 
   public String formatWeeklyStreak(JSONArray weeks) {
-      // Pega a última semana do calendário
       JSONObject lastWeek = weeks.getJSONObject(weeks.length() - 1);
       JSONArray days = lastWeek.getJSONArray("contributionDays");
 
-      // Dias da semana (GitHub começa em domingo, mas podemos reordenar)
       String[] dias = {"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"};
 
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < days.length(); i++) {
           int count = days.getJSONObject(i).getInt("contributionCount");
-          String emoji = count > 0 ? "🟩" : "🟥"; // verde = commit, vermelho = falha
+          String emoji = count > 0 ? "🟩" : "🟥"; 
           sb.append(dias[i]).append(" ").append(emoji).append("  ");
       }
 

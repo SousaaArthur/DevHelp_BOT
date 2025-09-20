@@ -7,15 +7,15 @@ public class VoiceUpdateListener extends ListenerAdapter {
 
   @Override
   public void onGuildVoiceUpdate(GuildVoiceUpdateEvent event) {
-      var member = event.getEntity();
-      var joined = event.getChannelJoined();
-      var left = event.getChannelLeft();
+    var member = event.getEntity();
+    var joined = event.getChannelJoined();
+    var left = event.getChannelLeft();
 
-      if (joined != null) {
-          System.out.println("➡️ " + member.getEffectiveName() + " entrou em " + joined.getName());
-      }
-      if (left != null) {
-          System.out.println("⬅️ " + member.getEffectiveName() + " saiu de " + left.getName());
-      }
+    if (joined != null) {
+      System.out.println("➡️ " + member.getEffectiveName() + " entrou em " + joined.getName());
+    }
+    if (left != null) {
+      System.out.println("⬅️ " + member.getEffectiveName() + " saiu de " + left.getName());
+    }
   }
 }
