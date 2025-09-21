@@ -63,7 +63,8 @@ public class UserRepository {
         .append("languages", user.getLanguages())
         .append("roles", user.getRole())
         .append("messagesSent", user.getMessagesSent())
-        .append("githubUser", user.getGithubUser());
+        .append("githubUser", user.getGithubUser())
+        .append("githubStreak", user.getGithubStreak());
     usersCollection.insertOne(newUserDoc);
     return user;
   }
@@ -98,7 +99,6 @@ public class UserRepository {
 
       if (rank == -1) return "Usuário não encontrado no ranking.";
 
-      // Define limites da janela
       int start = Math.max(0, rank - windowSize); 
       int end = Math.min(users.size(), rank + windowSize);
 
@@ -146,13 +146,14 @@ public class UserRepository {
       user.setRole(userDoc.getList("roles", String.class));
       user.setGithubUser(userDoc.getString("githubUser"));
       user.setMessagesSent(userDoc.getInteger("messagesSent", 0));
+      user.setGithubStreak(userDoc.getInteger("githubStreak", 0));
       return user;
     } else {
       return null;
     }
   }
-
   public void updateUser(User user) {
+
     Document query = new Document("userId", user.getUserId());
     Document update = new Document("$set", new Document("xp", user.getXp())
         .append("userName", user.getUserName())
@@ -165,7 +166,8 @@ public class UserRepository {
         .append("languages", user.getLanguages())
         .append("roles", user.getRole())
         .append("messagesSent", user.getMessagesSent())
-        .append("githubUser", user.getGithubUser()));
+        .append("githubUser", user.getGithubUser())
+        .append("githubStreak", user.getGithubStreak()));
     usersCollection.updateOne(query, update);
   }
 
