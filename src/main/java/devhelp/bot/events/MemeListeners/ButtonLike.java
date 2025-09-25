@@ -1,8 +1,8 @@
 package devhelp.bot.events.MemeListeners;
 
+import devhelp.bot.config.util.EmbedTemplate;
 import devhelp.bot.database.memeDB.Meme;
 import devhelp.bot.database.memeDB.MemeRepository;
-import devhelp.bot.services.EmbedBuilderService;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -34,7 +34,7 @@ public class ButtonLike extends ListenerAdapter {
         event.editComponents(ActionRow.of(updatedButtonLike, buttonViews)).queue();
         event.getHook()
             .sendMessageEmbeds(
-              new EmbedBuilderService().embedInfo("🕹️ +1 de XP em humor", "Você curtiu um meme. Achievement desbloqueado: ``Bom gosto digital``.", null)
+              new EmbedTemplate().embedInfo("🕹️ +1 de XP em humor", "Você curtiu um meme. Achievement desbloqueado: ``Bom gosto digital``.", null)
             )
             .setEphemeral(true)
             .queue();

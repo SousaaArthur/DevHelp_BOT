@@ -1,9 +1,9 @@
 package devhelp.bot.commands.study.Exercise;
 
 import devhelp.bot.commands.ICommand;
+import devhelp.bot.config.util.EmbedTemplate;
 import devhelp.bot.database.exerciseDB.Exercise;
 import devhelp.bot.database.exerciseDB.ExerciseRepository;
-import devhelp.bot.services.EmbedBuilderService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -47,7 +47,7 @@ public class ExerciseCommand implements ICommand {
 
         if (exercise == null) {
             event.getHook().sendMessageEmbeds(
-                new EmbedBuilderService().embedError("Ops! 😢", "Nenhum exercício encontrado para essa linguagem e dificuldade!\n" + "> Para saber quais exercícios estão disponíveis, use o comando `/help`.", null)
+                new EmbedTemplate().embedError("Ops! 😢", "Nenhum exercício encontrado para essa linguagem e dificuldade!\n" + "> Para saber quais exercícios estão disponíveis, use o comando `/help`.", null)
             ).queue();
             return;
         }

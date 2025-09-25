@@ -2,10 +2,10 @@ package devhelp.bot.commands.utility.Levels;
 
 import devhelp.bot.commands.ICommand;
 import devhelp.bot.config.util.Colors;
+import devhelp.bot.config.util.EmbedTemplate;
 import devhelp.bot.database.usersDB.User;
 import devhelp.bot.database.usersDB.UserRepository;
 import devhelp.bot.exception.UserNotFoundException;
-import devhelp.bot.services.EmbedBuilderService;
 import devhelp.bot.services.LevelService;
 import devhelp.bot.services.ProgressBar;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -51,7 +51,7 @@ public class Level implements ICommand {
     } catch(UserNotFoundException e){
       e.printStackTrace();
       event.replyEmbeds(
-        new EmbedBuilderService().embedWarning("⚠️ Aviso", e.getMessage(), null)
+        new EmbedTemplate().embedWarning("⚠️ Aviso", e.getMessage(), null)
       ).setEphemeral(true).queue();
     } catch(Exception e){
       event.reply("Ocorreu um erro ao executar o comando.").setEphemeral(true).queue();

@@ -4,18 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import devhelp.bot.config.util.Colors;
-import devhelp.bot.services.EmbedBuilderService;
+import devhelp.bot.config.util.EmbedTemplate;
+import devhelp.bot.events.helpListeners.HelpInteractionListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 public class HelpPages {
   private static final Map<String, MessageEmbed> pages = new HashMap<>();
+  private static String choice = new HelpInteractionListener().getChoice();
 
   static {
-    pages.put("menu", new EmbedBuilderService().embedInfo(null,
+    pages.put("menu", new EmbedTemplate().embedInfo(null,
         """
               ## 📖 Central de Ajuda – Star Code
               Bem-vindo à central de ajuda do Star Code!
@@ -31,21 +34,24 @@ public class HelpPages {
 
               **🧑‍💻 Iniciante**
               Recursos e atalhos para quem está começando na jornada dev.
+
+              **🎯 Utilidades**
+              Ferramentas úteis para facilitar seu dia a dia como desenvolvedor.
             """, "Selecione uma categoria para ver os comandos disponíveis."));
-    pages.put("Estudos", new EmbedBuilderService().embedInfo(null,
+    pages.put("Estudos", new EmbedTemplate().embedInfo(null,
         """
             # 📚 Comandos de Estudos
             > Aqui estão os comandos para estudos:
             ``/exercise`` - Comando para gerar exercícios de programação!
             """, null));
-    pages.put("Diversão", new EmbedBuilderService().embedInfo(null,
+    pages.put("Diversão", new EmbedTemplate().embedInfo(null,
         """
             # 📚 Comandos de Diversão
             > Aqui estão os comandos para diversão:
             ``/memes`` - Comando para gerar memes aleatório de programação!
             ``/coinflip`` - Comando para girar a moeda!
             """, null));
-    pages.put("Iniciante", new EmbedBuilderService().embedInfo(null,
+    pages.put("Iniciante", new EmbedTemplate().embedInfo(null,
         """
             # 📚 Comandos para Iniciante
             > Aqui estão os comandos para iniciante:
@@ -60,27 +66,34 @@ public class HelpPages {
   }
 
   private static MessageEmbed errorPage() {
-    return new EmbedBuilderService().embedError("❌ Erro", "Opção inválida!", null);
+    return new EmbedTemplate().embedError("❌ Erro", "Opção inválida!", null);
   }
 
-  public static StringSelectMenu getSelectHelpMenu() {
+  public static StringSelectMenu getSelectHelpMenu(String selected) {
     return StringSelectMenu.create("command-menu")
-        .setPlaceholder("Escolha uma opção!")
-        .addOption("Estudos 📚", "Estudos", "Acesse comandos voltados para aprendizado")
-        .addOption("Diversão 🕹️", "Diversão", "Descubra comandos para se divertir")
-        .addOption("Iniciante 👨‍💻", "Iniciante",
-            "Obtenha orientações para começar na programação")
-        .addOption("Menu 💾", "Menu", "Volte ao menu principal")
-        .build();
+        .addOptions(
+          SelectOption.of("Estudos 📚", "Estudos")
+            .withDescription("Acesse comandos voltados para aprendizado")
+            .withDefault("Estudos".equals(selected)),
+          SelectOption.of("Diversão 🕹️", "Diversão")
+            .withDescription("Descubra comandos para se divertir")
+            .withDefault("Diversão".equals(selected)),
+          SelectOption.of("Iniciante 👨‍💻", "Iniciante")
+            .withDescription("Obtenha orientações para começar na programação")
+            .withDefault("Iniciante".equals(selected)),
+          SelectOption.of("Menu 💾", "Menu")
+            .withDescription("Volte ao menu principal")
+            .withDefault("Menu".equals(selected))
+        ).build();
   }
 
-  public static void optiosHelp(String choice, StringSelectInteractionEvent event){
+  public static void optionsHelp(StringSelectInteractionEvent event){
         switch (event.getValues().get(0)) {
       case "Estudos" -> event.editMessageEmbeds(
         getPage("Estudos")
       ).setComponents(
         ActionRow.of(
-          getSelectHelpMenu()
+          getSelectHelpMenu(choice)
         ),
         ActionRow.of(
           StudyPages.getSelectStudyMenu()
@@ -88,30 +101,25 @@ public class HelpPages {
       ).queue();
       case "Diversão" -> event.editMessageEmbeds(getPage("Diversão")).setComponents(
         ActionRow.of(
-          getSelectHelpMenu()
+          getSelectHelpMenu(choice)
         ),
         ActionRow.of(
-          FunPages.getSelectFunMenu()
+          FunPages.getSelectFunMenu(choice)
         )
       ).queue();
       case "Iniciante" -> event.editMessageEmbeds(getPage("Iniciante")).setComponents(
           ActionRow.of(
-            getSelectHelpMenu()
+            getSelectHelpMenu(choice)
           ),
           ActionRow.of(
             BeginnerPages.getSelectBeginnerMenu()
           )
       ).queue();
-      // case "GitHub" -> event.editMessageEmbeds(templateEmbed(
-      //     "GitHub", """
-      //         Acesse o repositório oficial do bot no GitHub:
-      //         [Clique aqui](https://github.com/filipedhunior/DevHelper)
-      //         """)).queue();
       case "Menu" -> event.editMessageEmbeds(
           HelpPages.getPage("menu")
       ).setComponents(
         ActionRow.of(
-          HelpPages.getSelectHelpMenu()
+          HelpPages.getSelectHelpMenu(choice)
         )
       ).queue();
       default -> event.editMessageEmbeds(new EmbedBuilder()

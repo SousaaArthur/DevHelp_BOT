@@ -1,11 +1,11 @@
-package devhelp.bot.services;
+package devhelp.bot.config.util;
 
-import devhelp.bot.config.util.Colors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class EmbedBuilderService {
+public class EmbedTemplate {
   private String embedId;
+
   public MessageEmbed embedSucess(String title, String description, String avatarUrl, String footer){
     return new EmbedBuilder()
     .setTitle(title)
