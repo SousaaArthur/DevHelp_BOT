@@ -37,7 +37,7 @@ public class MessageListener extends ListenerAdapter {
 
       levelUpEmbed(user, avatarUrl, event);
       user.setMessagesSent(user.getMessagesSent() + 1);
-
+      user.setAvatarUrl(avatarUrl);
       userRepo.updateUser(user);
     });
   }

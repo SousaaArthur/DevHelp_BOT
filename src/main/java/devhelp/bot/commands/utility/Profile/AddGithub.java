@@ -1,11 +1,11 @@
 package devhelp.bot.commands.utility.Profile;
 
 import devhelp.bot.commands.ICommand;
+import devhelp.bot.config.util.EmbedTemplate;
 import devhelp.bot.database.usersDB.User;
 import devhelp.bot.database.usersDB.UserRepository;
 import devhelp.bot.exception.UserGithubNotFoundException;
 import devhelp.bot.exception.UserNotFoundException;
-import devhelp.bot.services.EmbedBuilderService;
 import devhelp.bot.services.GithubService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -26,7 +26,7 @@ public class AddGithub implements ICommand{
       }
       user.setGithubUser(getUserName);
       event.replyEmbeds(
-        new EmbedBuilderService().embedSucess(
+        new EmbedTemplate().embedSucess(
           "🐙 Github vinculado com sucesso!", 
           """
           ✅ **Usuário vinculado:** `%s`
@@ -39,16 +39,16 @@ public class AddGithub implements ICommand{
       userRepo.updateUser(user);
     } catch(UserNotFoundException e){
       event.replyEmbeds(
-        new EmbedBuilderService().embedWarning("⚠️ Usuário não encontrado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
+        new EmbedTemplate().embedWarning("⚠️ Usuário não encontrado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
       ).setEphemeral(true)
       .queue();
     } catch(UserGithubNotFoundException e) {
         event.replyEmbeds(
-          new EmbedBuilderService().embedWarning("⚠️ Usuário do Github não encontrado", e.getMessage(), null)
+          new EmbedTemplate().embedWarning("⚠️ Usuário do Github não encontrado", e.getMessage(), null)
         ).setEphemeral(true).queue();
     } catch (Exception e) {
       event.replyEmbeds(
-        new EmbedBuilderService().embedError("❌ Ocorreu um erro ao vincular o Github", "Verifique se você inseriu o username corretamente.", null)
+        new EmbedTemplate().embedError("❌ Ocorreu um erro ao vincular o Github", "Verifique se você inseriu o username corretamente.", null)
       ).setEphemeral(true).queue();
     }
   }

@@ -2,10 +2,10 @@ package devhelp.bot.commands.utility.Ranks;
 
 import devhelp.bot.commands.ICommand;
 import devhelp.bot.config.util.Colors;
+import devhelp.bot.config.util.EmbedTemplate;
 import devhelp.bot.database.usersDB.User;
 import devhelp.bot.database.usersDB.UserRepository;
 import devhelp.bot.exception.UserNotFoundException;
-import devhelp.bot.services.EmbedBuilderService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -39,7 +39,7 @@ public class Levels implements ICommand {
       }
     } catch(UserNotFoundException e){
       event.replyEmbeds(
-        new EmbedBuilderService().embedError("❌ Erro ao buscar usuário na lista!", e.getMessage(), "Tente buscar novamente mais tarde. Ou contate um administrador.")
+        new EmbedTemplate().embedError("❌ Erro ao buscar usuário na lista!", e.getMessage(), "Tente buscar novamente mais tarde. Ou contate um administrador.")
       ).setEphemeral(true).queue();
     } catch(Exception e){
       System.out.println(e.getMessage());

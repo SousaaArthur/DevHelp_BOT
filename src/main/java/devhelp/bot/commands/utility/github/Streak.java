@@ -4,11 +4,11 @@ import org.json.JSONArray;
 
 import devhelp.bot.commands.ICommand;
 import devhelp.bot.config.util.Colors;
+import devhelp.bot.config.util.EmbedTemplate;
 import devhelp.bot.database.usersDB.User;
 import devhelp.bot.database.usersDB.UserRepository;
 import devhelp.bot.exception.UserGithubNotFoundException;
 import devhelp.bot.exception.UserNotFoundException;
-import devhelp.bot.services.EmbedBuilderService;
 import devhelp.bot.services.GithubService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -65,17 +65,17 @@ public class Streak implements ICommand {
         .queue();
     } catch (UserGithubNotFoundException e) {
       event.replyEmbeds(
-        new EmbedBuilderService().embedWarning("⚠️ Usuário não vinculado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
+        new EmbedTemplate().embedWarning("⚠️ Usuário não vinculado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
       ).setEphemeral(true)
       .queue();
     } catch (UserNotFoundException e) {
       event.replyEmbeds(
-        new EmbedBuilderService().embedWarning("⚠️ Usuário não encontrado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
+        new EmbedTemplate().embedWarning("⚠️ Usuário não encontrado", e.getMessage(), "Em caso de dúvidas, contate um administrador.")
       ).setEphemeral(true)
       .queue();
     } catch (Exception e) {
       event.replyEmbeds(
-        new EmbedBuilderService().embedError("❌ Erro ao buscar streak do usuário!", e.getMessage(), "Tente novamente mais tarde. Ou contate um administrador.")
+        new EmbedTemplate().embedError("❌ Erro ao buscar streak do usuário!", e.getMessage(), "Tente novamente mais tarde. Ou contate um administrador.")
       ).setEphemeral(true).queue();
       e.printStackTrace();
     }
